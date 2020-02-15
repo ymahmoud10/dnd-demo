@@ -13,25 +13,28 @@ class DragDropV2 extends React.Component {
     ]
   }
   
-  onDragStart = (event, placeName) => {
-    console.log('dragstart on div: ', placeName);
-    event.dataTransfer.setData("placeName", placeName);
-    this.draggedItem = event.target;
+  onDragStart = (event, placeId) => {
+    event.dataTransfer.setData("draggedPlaceId", placeId);
+    // this.draggedItem = event.target;
+    console.log("Dragging:", placeId)
   }
   
   onDragOver = (event) => {
     event.preventDefault();
-    this.draggedItem.style.visibility = 'hidden';
-  }
+    // this.draggedItem.style.visibility = 'hidden'; //NOT GOOD
+   }
 
   onDrop = (event, newStatus) => {
-    let placeName = event.dataTransfer.getData("placeName");
-
+    console.log("Dropping on:", event.target.draggable);
+    let draggedPlaceId = event.dataTransfer.getData("draggedPlaceId");
     let places = this.state.places.filter((place) => {
-        if (place.name === placeName) {
-            place.status = newStatus;
-        }
-        return place;
+      if (place.status === newStatus) {
+        place.status = "unplanned";
+      }
+      if (place.id === draggedPlaceId) {
+        place.status = newStatus;
+      }
+      return place;
     });
 
     this.setState({
@@ -47,21 +50,19 @@ class DragDropV2 extends React.Component {
     }
     
     this.state.places.forEach ((place) => {
-      console.log(place.status);
       if (place.status === 'unplanned') {
         places[place.status].push(
           <div key={place.id} 
-          onDragStart = {(event) => this.onDragStart(event, place.name)}
+          onDragStart = {(event) => this.onDragStart(event, place.id)}
           draggable
           className="draggable">
           {place.name}
           </div>
         );
       } else {
-        console.log(places.planned);
         places.planned[place.status] = (
           <div key={place.id} 
-            onDragStart = {(event) => this.onDragStart(event, place.name)}
+            onDragStart = {(event) => this.onDragStart(event, place.id)}
             draggable
             className="draggable">
             {place.name}
@@ -80,12 +81,13 @@ class DragDropV2 extends React.Component {
           {places.unplanned}
         </div>
         <div className="timeline">
+          <span className="group-header">Timeline</span>
           {
           _.times(24, (i) => (
-            <div className="droppable" key={i}
+            <div className="droppable" key={i} id={i}
             onDragOver={(event)=>this.onDragOver(event)}
             onDrop={(event)=>this.onDrop(event, i)}>
-              <span className="group-header">{i}:00</span>
+              <span className="droppable-title">{i < 10 ? `0${i}`:i}:00</span>
               {places.planned[i]}
             </div>
           ))

@@ -19,19 +19,31 @@
   cursor: grabbing;
   width: 100px;
   height: 40px;
-  background-color: bisque;
+  background-color: aliceblue;
+  border-radius: 5px;
+  margin: 10px auto;
 }
 
-.droppable:nth-child(even) {
-  background-color: rgb(155, 155, 155);
-}
-
-.droppable:nth-child(odd) {
-  background-color: rgb(173, 173, 173);
+.droppable-title {
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  color: grey;
+  opacity: 0.8;
 }
 
 .droppable {
+  position: relative;
   height: 60px;
+  overflow: auto;
+}
+
+.droppable:nth-child(even) {
+  background-color: rgb(216, 216, 216);
+}
+
+.droppable:nth-child(odd) {
+  background-color: rgb(202, 202, 202);
 }
 
 .unplanned {
