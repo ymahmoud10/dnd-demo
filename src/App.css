@@ -1,38 +1,48 @@
 .App {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.drag-container {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.head {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  background-color: #CCCCCC;
+  width:100%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.draggable {
+  cursor: grabbing;
+  width: 100px;
+  height: 40px;
+  background-color: bisque;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.droppable:nth-child(even) {
+  background-color: rgb(155, 155, 155);
 }
 
-.App-link {
-  color: #61dafb;
+.droppable:nth-child(odd) {
+  background-color: rgb(173, 173, 173);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.droppable {
+  height: 60px;
+}
+
+.unplanned {
+  position: absolute;
+  top: 80px;
+  left: 100px;
+}
+
+.timeline {
+  position: absolute;
+  top: 80px;
+  left: 500px;
+  width: 200px;
 }
