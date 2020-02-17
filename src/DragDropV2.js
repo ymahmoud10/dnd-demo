@@ -13,10 +13,12 @@ class DragDropV2 extends React.Component {
     ]
   }
   
-  onDragStart = (event, placeId) => {
+  onDragStart = (event, placeId, placeStatus) => {
     event.dataTransfer.setData("draggedPlaceId", placeId);
+    event.dataTransfer.setData("draggedPlaceStatus", placeStatus);
+    console.log('draggedPlaceId', placeId);
+    console.log('draggedPlaceStatus', placeStatus);
     // this.draggedItem = event.target;
-    console.log("Dragging:", placeId)
   }
   
   onDragOver = (event) => {
@@ -25,11 +27,13 @@ class DragDropV2 extends React.Component {
    }
 
   onDrop = (event, newStatus) => {
-    console.log("Dropping on:", event.target.draggable);
     let draggedPlaceId = event.dataTransfer.getData("draggedPlaceId");
+    let draggedPlaceStatus = Number.parseInt(event.dataTransfer.getData("draggedPlaceStatus"));
+    console.log(this.state.places);
     let places = this.state.places.filter((place) => {
       if (place.status === newStatus) {
-        place.status = "unplanned";
+        // Target has place already
+        place.status = draggedPlaceStatus;
       }
       if (place.id === draggedPlaceId) {
         place.status = newStatus;
@@ -53,7 +57,7 @@ class DragDropV2 extends React.Component {
       if (place.status === 'unplanned') {
         places[place.status].push(
           <div key={place.id} 
-          onDragStart = {(event) => this.onDragStart(event, place.id)}
+          onDragStart = {(event) => this.onDragStart(event, place.id, place.status)}
           draggable
           className="draggable">
           {place.name}
@@ -62,7 +66,7 @@ class DragDropV2 extends React.Component {
       } else {
         places.planned[place.status] = (
           <div key={place.id} 
-            onDragStart = {(event) => this.onDragStart(event, place.id)}
+            onDragStart = {(event) => this.onDragStart(event, place.id, place.status)}
             draggable
             className="draggable">
             {place.name}
